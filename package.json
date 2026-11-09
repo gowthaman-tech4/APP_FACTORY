@@ -5,10 +5,11 @@
   "type": "module",
   "main": "src/engine/appCore.js",
   "scripts": {
-    "test": "node tests/smoke.test.js && node tests/sprint2.test.js && node tests/sprint3.test.js",
+    "test": "node tests/smoke.test.js && node tests/sprint2.test.js && node tests/sprint3.test.js && node tests/week2_full.test.js",
     "test:sprint1": "node tests/smoke.test.js",
     "test:sprint2": "node tests/sprint2.test.js",
-    "test:sprint3": "node tests/sprint3.test.js"
+    "test:sprint3": "node tests/sprint3.test.js",
+    "test:week2": "node tests/week2_full.test.js"
   },
   "keywords": [
     "pwa",

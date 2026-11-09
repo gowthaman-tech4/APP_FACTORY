@@ -64,3 +64,4 @@ assert(swContent.includes('caches.match'), 'Service worker implements cache-firs
 console.log('\n------------------------------------------------------');
 console.log(`SUMMARY: ${passedTests} of ${totalTests} Hardware & PWA tests passed successfully.`);
 console.log('------------------------------------------------------\n');
+

@@ -134,3 +134,4 @@ export async function printReceipt(receiptData) {
 
   return { success: true, method: 'simulated', payload };
 }
+
