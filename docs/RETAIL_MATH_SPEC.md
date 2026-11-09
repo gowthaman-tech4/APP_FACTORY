@@ -66,3 +66,4 @@ Retailers can toggle whether prices are inclusive or exclusive of local GST:
 | **Fast-Moving Foods** | 2.5% | 2.5% | 5% | Edible oils, packaged tea |
 | **Household Retail** | 6.0% | 6.0% | 12% | Processed foods, basic hardware |
 | **Standard Consumer**| 9.0% | 9.0% | 18% | Biscuits, soaps, electronics accessories |
+
