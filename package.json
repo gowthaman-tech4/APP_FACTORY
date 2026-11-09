@@ -1,0 +1,22 @@
+{
+  "name": "app-factory",
+  "version": "1.0.0",
+  "description": "Canva for Business Applications — Turnkey, mobile-first operational software for local trades.",
+  "type": "module",
+  "main": "src/engine/appCore.js",
+  "scripts": {
+    "test": "node tests/smoke.test.js && node tests/sprint2.test.js",
+    "test:sprint1": "node tests/smoke.test.js",
+    "test:sprint2": "node tests/sprint2.test.js"
+  },
+  "keywords": [
+    "pwa",
+    "business-apps",
+    "no-code",
+    "canva-for-apps",
+    "retail",
+    "autocare"
+  ],
+  "author": "Pugazhendhi",
+  "license": "MIT"
+}

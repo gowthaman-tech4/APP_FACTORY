@@ -1,0 +1,37 @@
+{
+  "id": "kirana-retail-quickdesk",
+  "name": "Kirana & Retail QuickDesk",
+  "industry": "Retail, Provision & Kirana Stores (India)",
+  "version": "1.0.0",
+  "branding": {
+    "defaultName": "Sri Lakshmi Provision & Super Store",
+    "themeColor": "#059669",
+    "currency": "₹",
+    "tagline": "Fast 5-Second Billing & Digital Khata"
+  },
+  "states": [
+    { "key": "paid_cash", "label": "Paid (Cash)", "badgeColor": "#10b981" },
+    { "key": "paid_upi", "label": "Paid (UPI)", "badgeColor": "#0284c7" },
+    { "key": "udhar_pending", "label": "Credit / Udhar (Pending)", "badgeColor": "#f59e0b" },
+    { "key": "settled", "label": "Udhar Cleared", "badgeColor": "#64748b" }
+  ],
+  "fields": [
+    { "id": "customerName", "label": "Customer Name", "type": "text", "placeholder": "e.g., Ramesh Kumar", "required": true },
+    { "id": "phone", "label": "WhatsApp Phone No", "type": "tel", "placeholder": "e.g., 9876543210", "required": true },
+    { "id": "itemsSummary", "label": "Items Sold / Bill Summary", "type": "textarea", "placeholder": "e.g., 5kg Aashirvaad Atta, 1L Sunflower Oil, 1kg Sugar", "required": true },
+    { "id": "totalBill", "label": "Total Amount (₹)", "type": "number", "placeholder": "e.g., 680", "required": true },
+    { "id": "paymentType", "label": "Payment Mode", "type": "select", "options": ["UPI QR Code", "Cash", "Udhar / Credit (Pay Later)"], "default": "UPI QR Code" },
+    { "id": "dueDate", "label": "Udhar Due Date (if Credit)", "type": "date" }
+  ],
+  "featureToggles": [
+    { "id": "whatsapp_digital_receipt", "label": "Send Paperless WhatsApp Bill with UPI Link", "enabled": true },
+    { "id": "khata_credit_tracker", "label": "Customer Udhar Balance & Due Alerts", "enabled": true },
+    { "id": "dynamic_upi_qr", "label": "Instant Dynamic UPI Payment QR Display", "enabled": true },
+    { "id": "camera_barcode_scanner", "label": "Phone Camera Barcode Item Scanner", "enabled": true }
+  ],
+  "notifications": {
+    "bill_template": "Namaste {{customerName}}ji! 🙏\nYour bill at *{{shopName}}* is *₹{{totalBill}}*.\n\nItems: {{itemsSummary}}\nMode: {{paymentType}}\n\nView digital receipt & pay via UPI here:\n{{trackingUrl}}\nThank you for shopping local!",
+    "udhar_reminder_template": "Namaste {{customerName}}ji, gentle reminder from *{{shopName}}*:\nPending Udhar Balance: *₹{{totalBill}}* was due on {{dueDate}}.\n\nPay in 1-click via UPI: {{upiPayUrl}}\nThank you!"
+  }
+}
+

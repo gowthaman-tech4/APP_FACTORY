@@ -1,0 +1,36 @@
+{
+  "id": "autocare-desk",
+  "name": "AutoCare Desk",
+  "industry": "Automotive Repair & Detailing",
+  "version": "1.0.0",
+  "branding": {
+    "defaultName": "Apex Motors & Service",
+    "themeColor": "#2563eb",
+    "tagline": "Fast, Reliable Vehicle Care"
+  },
+  "states": [
+    { "key": "received", "label": "Vehicle Checked In", "badgeColor": "#64748b" },
+    { "key": "diagnosing", "label": "Diagnosis / Inspection", "badgeColor": "#f59e0b" },
+    { "key": "repairing", "label": "Work In Progress", "badgeColor": "#3b82f6" },
+    { "key": "ready", "label": "Ready for Delivery", "badgeColor": "#10b981" },
+    { "key": "delivered", "label": "Delivered & Paid", "badgeColor": "#475569" }
+  ],
+  "fields": [
+    { "id": "vehicleNo", "label": "Vehicle Plate No", "type": "text", "placeholder": "e.g., TN-01-AB-1234", "required": true },
+    { "id": "customerName", "label": "Customer Name", "type": "text", "placeholder": "e.g., Rajesh Kumar", "required": true },
+    { "id": "phone", "label": "WhatsApp Phone No", "type": "tel", "placeholder": "e.g., +91 98765 43210", "required": true },
+    { "id": "serviceType", "label": "Service Package", "type": "select", "options": ["General Service", "Brake Pad Replacement", "Oil & Filter Change", "AC Repair & Gas Fill", "Full Body Wash & Polish"] },
+    { "id": "estimatedCost", "label": "Estimated Cost ($)", "type": "number", "placeholder": "e.g., 85" },
+    { "id": "notes", "label": "Reported Issues / Notes", "type": "textarea", "placeholder": "Customer notes and preliminary inspection remarks" }
+  ],
+  "featureToggles": [
+    { "id": "whatsapp_alerts", "label": "Instant WhatsApp Status Links", "enabled": true },
+    { "id": "damage_photos", "label": "Vehicle Condition Inspection Photos", "enabled": true },
+    { "id": "battery_tracker", "label": "EV Battery & Charging Level Tracker", "enabled": false },
+    { "id": "thermal_receipt", "label": "1-Click Bluetooth Thermal Receipt Printing", "enabled": true }
+  ],
+  "notifications": {
+    "whatsapp_message_template": "Hello {{customerName}}, your vehicle ({{vehicleNo}}) is now marked as *{{status}}* at {{shopName}}. Track live progress & review your estimate here: {{trackingUrl}}"
+  }
+}
+

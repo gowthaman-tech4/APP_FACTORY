@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APP FACTORY — Canva for Business Applications</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .status-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- TOP HEADER & TEMPLATE SWITCHER -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/20">
+          AF
+        </div>
+        <div>
+          <h1 class="font-bold text-sm sm:text-base tracking-tight text-white flex items-center gap-2">
+            APP FACTORY
+          </h1>
+          <p class="text-[11px] text-slate-400">Canva for Business Applications</p>
+        </div>
+      </div>
+
+      <!-- INDUSTRY TEMPLATE SELECTOR (THE CANVA PICKER) -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-400 hidden md:inline">Template:</span>
+        <select id="industry-selector" onchange="changeIndustry(this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs font-semibold rounded-xl px-3 py-1.5 focus:outline-none focus:border-blue-500">
+          <option value="autocare">🚗 AutoCare Desk (Garage & Workshop)</option>
+          <option value="retail" selected>🛒 Kirana & Retail QuickDesk (India)</option>
+        </select>
+      </div>
+
+      <!-- VIEW SELECTOR TABS -->
+      <nav class="flex items-center p-1 bg-slate-950 rounded-xl border border-slate-800">
+        <button onclick="switchTab('terminal')" id="tab-terminal" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-blue-600 text-white shadow">
+          <i data-lucide="store" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Shop</span> Terminal
+        </button>
+        <button onclick="switchTab('customer')" id="tab-customer" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Customer</span> Live Bill
+        </button>
+        <button onclick="switchTab('studio')" id="tab-studio" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white">
+          <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Customizer
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ============================================== -->
+    <!-- VIEW 1: SHOP OPERATIONAL TERMINAL (PWA)        -->
+    <!-- ============================================== -->
+    <section id="view-terminal" class="space-y-6">
+      <!-- TOP BANNER & ACTION BAR -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 id="disp-shop-name" class="text-xl font-bold text-white tracking-tight">Sri Lakshmi Provision & Super Store</h2>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live Online
+            </span>
+          </div>
+          <p id="disp-tagline" class="text-xs text-slate-400 mt-1">Fast 5-Second Digital Billing & Udhar (Credit) Khata Manager.</p>
+        </div>
+
+        <button onclick="openModal()" id="btn-primary-action" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-600/30 transition active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i> + Fast Bill / Udhar Entry
+        </button>
+      </div>
+
+      <!-- KPI METRICS (DYNAMIC FOR INDUSTRY) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="kpi-container">
+        <!-- Rendered dynamically via JS -->
+      </div>
+
+      <!-- ACTIVE RECORDS LIST -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 id="records-header-title" class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+            <i data-lucide="receipt" class="w-4 h-4 text-emerald-400"></i> Today's Transactions & Credit Ledger
+          </h3>
+          <span class="text-xs text-slate-500">Click WhatsApp to send instant digital bill with 1-click UPI pay link</span>
+        </div>
+
+        <div id="records-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamic cards injected via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- VIEW 2: CUSTOMER DIGITAL RECEIPT / TRACKER     -->
+    <!-- ============================================== -->
+    <section id="view-customer" class="hidden">
+      <div class="max-w-md mx-auto">
+        <div class="bg-slate-900 border-2 border-slate-800 rounded-[2.5rem] p-4 shadow-2xl relative overflow-hidden">
+          <div class="w-28 h-4 bg-slate-950 rounded-full mx-auto mb-4 border border-slate-800"></div>
+
+          <div class="bg-slate-950 rounded-2xl p-5 border border-slate-800 space-y-5" id="customer-view-content">
+            <!-- Dynamic Receipt View injected via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- VIEW 3: CANVA-STYLE SPLIT-SCREEN CUSTOMIZER    -->
+    <!-- ============================================== -->
+    <section id="view-studio" class="hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- LEFT: CONTROLS (3-Minute Setup) -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="palette" class="w-5 h-5 text-blue-400"></i> App Factory Studio
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Configure your business template in real-time with zero code.</p>
+          </div>
+
+          <!-- Business Info -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Business Name</label>
+              <input type="text" id="cfg-shop-name" value="Sri Lakshmi Provision & Super Store" oninput="updateBrandingFromInput()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Currency</label>
+                <select id="cfg-currency" onchange="updateBrandingFromInput()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+                  <option value="₹" selected>₹ (INR)</option>
+                  <option value="$">$ (USD)</option>
+                  <option value="€">€ (EUR)</option>
+                  <option value="£">£ (GBP)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Accent Vibe</label>
+                <div class="flex items-center gap-2 mt-1">
+                  <button onclick="setThemeColor('emerald')" class="w-8 h-8 rounded-lg bg-emerald-600 ring-2 ring-emerald-400"></button>
+                  <button onclick="setThemeColor('blue')" class="w-8 h-8 rounded-lg bg-blue-600"></button>
+                  <button onclick="setThemeColor('amber')" class="w-8 h-8 rounded-lg bg-amber-600"></button>
+                  <button onclick="setThemeColor('purple')" class="w-8 h-8 rounded-lg bg-purple-600"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature Toggles -->
+          <div class="space-y-3 pt-4 border-t border-slate-800">
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Feature Toggles</label>
+
+            <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <div>
+                <p class="text-xs font-semibold text-white">Digital WhatsApp Receipts</p>
+                <p class="text-[10px] text-slate-400">Zero-cost native wa.me deep links</p>
+              </div>
+              <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <div>
+                <p class="text-xs font-semibold text-white">Khata (Udhar) Auto-Reminders</p>
+                <p class="text-[10px] text-slate-400">Polite 1-click payment due alerts</p>
+              </div>
+              <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+            </div>
+
+            <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <div>
+                <p class="text-xs font-semibold text-white">Dynamic UPI QR Code</p>
+                <p class="text-[10px] text-slate-400">Direct-to-bank instant settlement</p>
+              </div>
+              <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+            </div>
+          </div>
+
+          <!-- LAUNCH BUTTON -->
+          <button onclick="alert('Congratulations! This provisions a multi-tenant PostgreSQL database & custom domain in 15 seconds.')" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+            <i data-lucide="rocket" class="w-4 h-4"></i> Deploy Live Business App
+          </button>
+        </div>
+
+        <!-- RIGHT: LIVE INTERACTIVE PREVIEW -->
+        <div class="lg:col-span-7 flex flex-col items-center">
+          <p class="text-xs text-slate-400 uppercase font-semibold mb-3 tracking-wider flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5 text-emerald-400"></i> Real-Time Mobile Preview
+          </p>
+
+          <div class="w-full max-w-sm bg-slate-900 border-4 border-slate-800 rounded-[2.5rem] p-4 shadow-2xl">
+            <div class="w-24 h-3 bg-slate-950 rounded-full mx-auto mb-3"></div>
+            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800 space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h4 id="prev-shop-name" class="font-bold text-sm text-white">Sri Lakshmi Provision Store</h4>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">Live PWA</span>
+              </div>
+
+              <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <span class="text-xs font-bold text-white">Ramesh Kumar</span>
+                    <p class="text-[10px] text-slate-400">5kg Atta, 1L Oil, 1kg Sugar</p>
+                  </div>
+                  <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">Paid (UPI)</span>
+                </div>
+                <div class="mt-3 flex justify-between items-center text-xs pt-2 border-t border-slate-800">
+                  <span class="text-slate-400">Total: <strong class="text-white">₹680</strong></span>
+                  <button class="px-2 py-1 rounded bg-emerald-600 text-[10px] font-semibold text-white">WhatsApp Bill</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- MODAL: DYNAMIC CHECK-IN / FAST BILL            -->
+  <!-- ============================================== -->
+  <div id="entry-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="modal-title" class="font-bold text-base text-white flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-400"></i> New Entry
+        </h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <form onsubmit="handleFormSubmit(event)" id="dynamic-form" class="space-y-3">
+        <!-- Rendered dynamically based on current template -->
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT STATE ENGINE -->
+  <script>
+    // DATA STORE FOR THE TWO TEMPLATES
+    const TEMPLATES = {
+      retail: {
+        name: "Sri Lakshmi Provision & Super Store",
+        tagline: "Fast 5-Second Digital Billing & Udhar (Credit) Khata Manager.",
+        currency: "₹",
+        theme: "emerald",
+        recordsTitle: "Today's Transactions & Credit Ledger",
+        buttonText: "+ Fast Bill / Udhar Entry",
+        kpis: [
+          { label: "Today's Cash Sales", value: "₹4,250", color: "text-white" },
+          { label: "Today's UPI Sales", value: "₹7,890", color: "text-blue-400" },
+          { label: "Pending Udhar (Credit)", value: "₹3,450", color: "text-amber-400" },
+          { label: "Total Daily Turnover", value: "₹15,590", color: "text-emerald-400" }
+        ],
+        records: [
+          { id: 101, title: "Ramesh Kumar", subtitle: "5kg Atta, 1L Sunflower Oil, 1kg Sugar", phone: "9876543210", amount: 680, mode: "upi", status: "Paid (UPI)" },
+          { id: 102, title: "Suresh (Tailor)", subtitle: "Tea Powder, Good Day Biscuits, 2L Milk", phone: "9845671234", amount: 240, mode: "udhar", status: "Udhar (Pending)" },
+          { id: 103, title: "Kavitha Mam", subtitle: "Basmati Rice 10kg, Toor Dal 2kg", phone: "9812345678", amount: 1350, mode: "cash", status: "Paid (Cash)" }
+        ]
+      },
+      autocare: {
+        name: "Apex Motors & Service Hub",
+        tagline: "Single-thumb vehicle job cards & customer live tracking.",
+        currency: "$",
+        theme: "blue",
+        recordsTitle: "Active Service Bays & Vehicles",
+        buttonText: "+ Check-In Vehicle (30s)",
+        kpis: [
+          { label: "Active in Bays", value: "3 Cars", color: "text-white" },
+          { label: "In Diagnosis", value: "1 Car", color: "text-amber-400" },
+          { label: "In Repair", value: "1 Car", color: "text-blue-400" },
+          { label: "Ready for Pickup", value: "1 Car", color: "text-emerald-400" }
+        ],
+        records: [
+          { id: 201, title: "TN-01-AB-1234", subtitle: "Honda Civic • Rajesh Kumar (Brake Service)", phone: "9876543210", amount: 85, mode: "repairing", status: "In Repair" },
+          { id: 202, title: "MH-02-C-8899", subtitle: "Swift Dzire • Amit Sharma (Oil Change)", phone: "9812345678", amount: 65, mode: "ready", status: "Ready for Pickup" },
+          { id: 203, title: "KA-05-D-4321", subtitle: "Hyundai i20 • Priya Sundaram (AC Gas)", phone: "9845671234", amount: 100, mode: "received", status: "Checked In" }
+        ]
+      }
+    };
+
+    let activeIndustry = "retail";
+
+    function changeIndustry(industryKey) {
+      activeIndustry = industryKey;
+      const data = TEMPLATES[activeIndustry];
+      document.getElementById('disp-shop-name').innerText = data.name;
+      document.getElementById('disp-tagline').innerText = data.tagline;
+      document.getElementById('cfg-shop-name').value = data.name;
+      document.getElementById('cfg-currency').value = data.currency;
+      document.getElementById('prev-shop-name').innerText = data.name;
+      document.getElementById('records-header-title').innerHTML = `<i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i> ${data.recordsTitle}`;
+      document.getElementById('btn-primary-action').innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> ${data.buttonText}`;
+
+      renderKPIs();
+      renderRecords();
+      renderCustomerView();
+      lucide.createIcons();
+    }
+
+    function renderKPIs() {
+      const container = document.getElementById('kpi-container');
+      container.innerHTML = '';
+      TEMPLATES[activeIndustry].kpis.forEach(kpi => {
+        const div = document.createElement('div');
+        div.className = "bg-slate-900 border border-slate-800 rounded-xl p-4";
+        div.innerHTML = `
+          <p class="text-xs font-medium text-slate-400">${kpi.label}</p>
+          <p class="text-2xl font-bold ${kpi.color} mt-1">${kpi.value}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderRecords() {
+      const grid = document.getElementById('records-grid');
+      grid.innerHTML = '';
+      const data = TEMPLATES[activeIndustry];
+
+      data.records.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-slate-700 transition";
+
+        let badgeStyle = "bg-emerald-500/20 text-emerald-400";
+        if (item.mode === 'udhar' || item.mode === 'diagnosing') badgeStyle = "bg-amber-500/20 text-amber-400";
+        if (item.mode === 'repairing' || item.mode === 'upi') badgeStyle = "bg-blue-500/20 text-blue-400";
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-sm font-black text-white tracking-wide">${item.title}</span>
+              <p class="text-xs text-slate-400 font-medium">${item.subtitle}</p>
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${badgeStyle}">${item.status}</span>
+          </div>
+
+          <div class="flex justify-between items-center text-xs py-2 border-y border-slate-800/80">
+            <span class="text-slate-400">Phone: ${item.phone}</span>
+            <span class="font-bold text-white text-sm">${data.currency}${item.amount}</span>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button onclick="advanceStatus(${item.id})" class="flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 transition">
+              ${activeIndustry === 'retail' ? (item.mode === 'udhar' ? 'Mark Settled ✓' : 'Print Slip 🖨️') : 'Next State ➔'}
+            </button>
+            <button onclick="sendWhatsApp(${item.id})" class="px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 text-xs font-semibold transition flex items-center gap-1 border border-emerald-500/30">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> WhatsApp
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function advanceStatus(id) {
+      const rec = TEMPLATES[activeIndustry].records.find(r => r.id === id);
+      if (rec) {
+        if (activeIndustry === 'retail') {
+          if (rec.mode === 'udhar') {
+            rec.mode = 'settled';
+            rec.status = 'Udhar Settled ✓';
+          } else {
+            alert('Receipt sent to Bluetooth thermal printer.');
+          }
+        } else {
+          rec.status = rec.status === 'In Repair' ? 'Ready for Pickup' : 'Delivered';
+        }
+        renderRecords();
+      }
+    }
+
+    function sendWhatsApp(id) {
+      const rec = TEMPLATES[activeIndustry].records.find(r => r.id === id);
+      const data = TEMPLATES[activeIndustry];
+      const cleanPhone = rec.phone.replace(/[^0-9]/g, '');
+
+      let message = "";
+      if (activeIndustry === 'retail') {
+        if (rec.mode === 'udhar') {
+          message = `Namaste ${rec.title}ji! 🙏 Gentle reminder from *${data.name}*: Your pending Udhar balance is *${data.currency}${rec.amount}* for ${rec.subtitle}. Pay in 1-click via UPI: upi://pay?pa=store@upi&pn=${encodeURIComponent(data.name)}&am=${rec.amount}&cu=INR. Thank you!`;
+        } else {
+          message = `Namaste ${rec.title}ji! 🙏 Your bill at *${data.name}* is *${data.currency}${rec.amount}* for ${rec.subtitle}. View digital receipt: https://store.app/bill/${rec.id}. Thank you for shopping with us!`;
+        }
+      } else {
+        message = `Hello ${rec.title}, your vehicle is now marked as *${rec.status.toUpperCase()}* at *${data.name}*. Estimate: ${data.currency}${rec.amount}. Live tracking: https://apex.app/track/${rec.id}`;
+      }
+
+      window.open(`https://wa.me/91${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function renderCustomerView() {
+      const c = document.getElementById('customer-view-content');
+      const data = TEMPLATES[activeIndustry];
+
+      if (activeIndustry === 'retail') {
+        c.innerHTML = `
+          <div class="text-center pb-4 border-b border-slate-800">
+            <span class="inline-block p-2 rounded-xl bg-emerald-600/10 border border-emerald-500/20 text-emerald-400 mb-2">
+              <i data-lucide="store" class="w-6 h-6"></i>
+            </span>
+            <h3 class="font-bold text-lg text-white">${data.name}</h3>
+            <p class="text-xs text-slate-400">Digital Bill & Instant UPI Settlement</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-2">
+            <div class="flex justify-between text-xs text-slate-400">
+              <span>Customer:</span> <strong class="text-white">Ramesh Kumar (9876543210)</strong>
+            </div>
+            <div class="flex justify-between text-xs text-slate-400">
+              <span>Date:</span> <strong class="text-white">Today, 08:30 PM</strong>
+            </div>
+            <div class="border-t border-slate-800 pt-2 text-xs text-slate-300">
+              <p>• 5kg Aashirvaad Atta - ₹240</p>
+              <p>• 1L Fortune Sunflower Oil - ₹160</p>
+              <p>• 2kg Sugar & Spices - ₹280</p>
+            </div>
+            <div class="border-t border-slate-800 pt-2 flex justify-between items-center">
+              <span class="text-xs uppercase font-bold text-slate-400">Grand Total</span>
+              <span class="text-xl font-black text-emerald-400">₹680.00</span>
+            </div>
+          </div>
+
+          <div class="text-center p-4 bg-slate-900/60 rounded-xl border border-slate-800">
+            <p class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Instant UPI Payment QR</p>
+            <div class="w-36 h-36 bg-white p-2 rounded-xl mx-auto flex items-center justify-center shadow-lg">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=upi://pay?pa=store@upi&pn=SriLakshmiStore&am=680&cu=INR" alt="UPI QR">
+            </div>
+            <p class="text-[11px] text-slate-500 mt-2">Scan with GPay, PhonePe, Paytm, or BHIM</p>
+          </div>
+
+          <button onclick="alert('Opening GPay / PhonePe directly via UPI deep link...')" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">
+            <i data-lucide="zap" class="w-4 h-4"></i> 1-Click Pay ₹680 via UPI
+          </button>
+        `;
+      } else {
+        c.innerHTML = `
+          <div class="text-center pb-4 border-b border-slate-800">
+            <span class="inline-block p-2 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-400 mb-2">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </span>
+            <h3 class="font-bold text-lg text-white">${data.name}</h3>
+            <p class="text-xs text-slate-400">Live Repair Progress & Estimate</p>
+          </div>
+
+          <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 flex justify-between items-center">
+            <div>
+              <p class="text-xs text-slate-400 uppercase font-semibold">Vehicle</p>
+              <p class="text-base font-bold text-white">TN-01-AB-1234</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-slate-400 uppercase font-semibold">Estimate</p>
+              <p class="text-base font-bold text-emerald-400">$85.00</p>
+            </div>
+          </div>
+
+          <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-center">
+            <p class="text-xs font-bold text-blue-400 flex items-center justify-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-blue-400 status-pulse"></span> In Repair (Bay #2)
+            </p>
+            <p class="text-[11px] text-slate-400 mt-1">Front brake pads being replaced</p>
+          </div>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    function switchTab(tab) {
+      ['terminal', 'customer', 'studio'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        document.getElementById(`tab-${t}`).className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-400 hover:text-white";
+      });
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-${tab}`).className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-blue-600 text-white shadow";
+      lucide.createIcons();
+    }
+
+    function openModal() {
+      const f = document.getElementById('dynamic-form');
+      const data = TEMPLATES[activeIndustry];
+      document.getElementById('modal-title').innerText = activeIndustry === 'retail' ? '+ New Fast Bill / Udhar' : '+ New Vehicle Check-In';
+
+      if (activeIndustry === 'retail') {
+        f.innerHTML = `
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Customer Name *</label>
+            <input type="text" id="in-name" required placeholder="e.g., Ramesh Kumar" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Phone *</label>
+            <input type="tel" id="in-phone" required placeholder="e.g., 9876543210" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Items Summary *</label>
+            <input type="text" id="in-items" required placeholder="e.g., 5kg Atta, 1L Oil" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Total (₹) *</label>
+              <input type="number" id="in-amount" required placeholder="e.g., 450" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Payment Mode</label>
+              <select id="in-mode" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-emerald-500">
+                <option value="upi">UPI QR</option>
+                <option value="cash">Cash</option>
+                <option value="udhar">Udhar (Credit)</option>
+              </select>
+            </div>
+          </div>
+          <div class="pt-2 flex gap-3">
+            <button type="button" onclick="closeModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300">Cancel</button>
+            <button type="submit" class="flex-1 py-2.5 rounded-xl bg-emerald-600 text-xs font-bold text-white shadow-lg shadow-emerald-600/30">Save & WhatsApp Bill (1s)</button>
+          </div>
+        `;
+      } else {
+        f.innerHTML = `
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Vehicle Plate No *</label>
+            <input type="text" id="in-name" required placeholder="e.g., TN-01-AB-1234" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Customer Name & Phone *</label>
+            <input type="text" id="in-items" required placeholder="e.g., Rajesh Kumar • 9876543210" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Phone *</label>
+            <input type="tel" id="in-phone" required placeholder="e.g., 9876543210" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Estimated Cost ($) *</label>
+            <input type="number" id="in-amount" required value="75" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+          <div class="pt-2 flex gap-3">
+            <button type="button" onclick="closeModal()" class="flex-1 py-2.5 rounded-xl bg-slate-800 text-xs font-semibold text-slate-300">Cancel</button>
+            <button type="submit" class="flex-1 py-2.5 rounded-xl bg-blue-600 text-xs font-bold text-white shadow-lg shadow-blue-600/30">Create Job Card (1s)</button>
+          </div>
+        `;
+      }
+      document.getElementById('entry-modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('entry-modal').classList.add('hidden'); }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const mode = document.getElementById('in-mode') ? document.getElementById('in-mode').value : 'received';
+      let status = "Paid (UPI)";
+      if (mode === 'udhar') status = "Udhar (Pending)";
+      if (mode === 'cash') status = "Paid (Cash)";
+      if (mode === 'received') status = "Checked In";
+
+      const newRec = {
+        id: Date.now(),
+        title: document.getElementById('in-name').value,
+        subtitle: document.getElementById('in-items').value,
+        phone: document.getElementById('in-phone').value,
+        amount: Number(document.getElementById('in-amount').value),
+        mode: mode,
+        status: status
+      };
+
+      TEMPLATES[activeIndustry].records.unshift(newRec);
+      renderRecords();
+      closeModal();
+    }
+
+    function updateBrandingFromInput() {
+      const val = document.getElementById('cfg-shop-name').value;
+      TEMPLATES[activeIndustry].name = val;
+      TEMPLATES[activeIndustry].currency = document.getElementById('cfg-currency').value;
+      document.getElementById('disp-shop-name').innerText = val;
+      document.getElementById('prev-shop-name').innerText = val;
+      renderRecords();
+      renderCustomerView();
+    }
+
+    function setThemeColor(c) {
+      alert(`Theme switched to ${c}. Live CSS tokens updated.`);
+    }
+
+    // INITIALIZE WITH RETAIL
+    changeIndustry("retail");
+  </script>
+</body>
+</html>
