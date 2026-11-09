@@ -78,3 +78,4 @@ assert(battery.level >= 0 && battery.level <= 100, 'Returns valid battery percen
 console.log('\n------------------------------------------------------');
 console.log(`SUMMARY: ${passedTests} of ${totalTests} Week 3 tests passed successfully.`);
 console.log('------------------------------------------------------\n');
+

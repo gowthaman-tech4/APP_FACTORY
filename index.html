@@ -37,12 +37,16 @@
         </div>
       </div>
 
-      <!-- INDUSTRY TEMPLATE SELECTOR (THE CANVA PICKER) -->
+      <!-- INDUSTRY TEMPLATE & LANGUAGE SELECTOR (THE CANVA PICKER) -->
       <div class="flex items-center gap-2">
-        <span class="text-xs text-slate-400 hidden md:inline">Template:</span>
-        <select id="industry-selector" onchange="changeIndustry(this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs font-semibold rounded-xl px-3 py-1.5 focus:outline-none focus:border-blue-500">
-          <option value="autocare">🚗 AutoCare Desk (Garage & Workshop)</option>
-          <option value="retail" selected>🛒 Kirana & Retail QuickDesk (India)</option>
+        <select id="industry-selector" onchange="changeIndustry(this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-blue-500">
+          <option value="autocare">🚗 AutoCare Desk (Garage)</option>
+          <option value="retail" selected>🛒 Kirana & Retail (India)</option>
+        </select>
+        <select id="lang-selector" onchange="changeLanguage(this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs font-bold rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-emerald-500">
+          <option value="en" selected>🇬🇧 EN</option>
+          <option value="ta">🇮🇳 தமிழ்</option>
+          <option value="hi">🇮🇳 हिन्दी</option>
         </select>
       </div>
 
@@ -311,6 +315,50 @@
       renderKPIs();
       renderRecords();
       renderCustomerView();
+      applyLanguage();
+      lucide.createIcons();
+    }
+
+    let currentLang = 'en';
+    const LANG_LABELS = {
+      en: {
+        terminal: "Shop Terminal",
+        customer: "Customer Live Bill",
+        studio: "Customizer",
+        retailAction: "+ Fast Bill / Udhar Entry",
+        autocareAction: "+ Check-In Vehicle (30s)",
+        printToast: "Sending receipt to 58mm Bluetooth thermal printer..."
+      },
+      ta: {
+        terminal: "கடை முனையம்",
+        customer: "வாடிக்கையாளர் பில்",
+        studio: "வடிவமைப்பு",
+        retailAction: "+ உடனடி பில் / கடன் பதிவு",
+        autocareAction: "+ வண்டி பதிவு (30 வினாடி)",
+        printToast: "ப்ளூடூத் பிரிண்டரில் பில் அச்சிடப்படுகிறது..."
+      },
+      hi: {
+        terminal: "दुकान टर्मिनल",
+        customer: "ग्राहक रसीद",
+        studio: "कस्टमाइज़र",
+        retailAction: "+ त्वरित बिल / उधार खाता",
+        autocareAction: "+ वाहन चेक-इन (30 सेकेंड)",
+        printToast: "ब्लूटूथ थर्मल प्रिंटर पर रसीद भेजी जा रही है..."
+      }
+    };
+
+    function changeLanguage(langCode) {
+      currentLang = langCode;
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      const l = LANG_LABELS[currentLang] || LANG_LABELS.en;
+      document.getElementById('tab-terminal').innerHTML = `<i data-lucide="store" class="w-3.5 h-3.5"></i> ${l.terminal}`;
+      document.getElementById('tab-customer').innerHTML = `<i data-lucide="smartphone" class="w-3.5 h-3.5"></i> ${l.customer}`;
+      document.getElementById('tab-studio').innerHTML = `<i data-lucide="sliders" class="w-3.5 h-3.5"></i> ${l.studio}`;
+      const actionText = activeIndustry === 'retail' ? l.retailAction : l.autocareAction;
+      document.getElementById('btn-primary-action').innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4"></i> ${actionText}`;
       lucide.createIcons();
     }
 

@@ -145,3 +145,4 @@ export class I18nManager {
     return dict[key] !== undefined ? dict[key] : (DICTIONARIES.en[key] || fallback || key);
   }
 }
+
