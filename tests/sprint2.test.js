@@ -83,3 +83,4 @@ assert(waUrl.includes('wa.me/919876543210') && waUrl.includes('680'), 'Generates
 console.log('\n------------------------------------------------------');
 console.log(`SUMMARY: ${passedTests} of ${totalTests} Sprint 2 tests passed successfully.`);
 console.log('------------------------------------------------------\n');
+
