@@ -74,3 +74,4 @@ export class TelemetryLogger {
     return batch;
   }
 }
+

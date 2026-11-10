@@ -64,3 +64,4 @@ assert(autoBatch[0].title && autoBatch[0].title.startsWith('TN-') || autoBatch[0
 console.log('\n------------------------------------------------------');
 console.log(`SUMMARY: ${passedTests} of ${totalTests} Field Pilot tests passed successfully.`);
 console.log('------------------------------------------------------\n');
+
